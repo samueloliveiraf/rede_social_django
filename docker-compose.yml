@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+   db_social:
+     image: postgres:12
+     container_name: db_social
+     environment:
+       - POSTGRES_PASSWORD=${DB_PASSWORD}
+     networks:
+       - production-network
+
+   web_social:
+     container_name: web_social
+     build:
+       dockerfile: ./docker/web_social.dockerfile
+       context: .
+     ports:
+       - "8000:8000"
+     depends_on:
+       - db_social
+     networks:
+       - production-network
+
+networks:
+  production-network:
+    driver: bridge
